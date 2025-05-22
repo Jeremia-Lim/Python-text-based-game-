@@ -1,0 +1,133 @@
+# Moon the Raccoon 
+
+class Room: 
+    def __init__(self, name, description, stage, challenge_func):
+        self.name = name 
+        self.description = description 
+        self.stage = stage 
+        self.challenge_func = challenge_func
+        self.completed = False 
+
+def shock_challenge(): 
+    print("\nYou see Dara, a deer frozen in fear. She's stuck in the middle of the path, wide-eyed.")
+    print("Moon needs to help Dara calm down, but how?")
+    choice = input("Do you whisper softly or shout to get her attention? (whisper/shout): ").strip().lower()
+    if choice == "whisper":
+        print("Moon softly whispers comforting words. Dara slowly blinks and steps aside, her shock fading.")
+        print("She steps aside carefully, as if the unseen terror has lessened its hold.")
+        print("Moon senses the first crack in her shock and the path ahead clears.")
+        return True
+    else: 
+        print("Moon shouts suddenly, startling Dara even more. She freezes tighter in fear.")
+        print("Her wide eyes dart toward the shadows—something unseen and terrifying lurks just beyond.")
+        print("Moon realizes he must be gentler to help Dara face what frightens her.")
+        return False
+
+def denial_challenge():
+    print("\nYou meet Ludo, a dog loyally waiting at an empty cabin.")
+    print('"He will come back. He promised," says Ludo.')
+    choice = input("Do you tell him the truth? (yes/no): ").strip().lower()
+    if choice == "yes":
+        print("Moon sits beside Ludo and gently tells him that his owner is gone.")
+        print("Ludo lowers his head, a soft whine escaping - but he nods in understanding.")
+        print('Ludo says, "Deep down I knew, but I kept hoping."')
+        return True 
+    else:
+        print("Ludo remains seated, staring at the door. He is not ready.")
+        return False       
+
+def anger_challenge():
+    print("\nA growl echoes. Brutus the bear is furiously swiping at the river.")
+    print(' "That fish was mine! The river stole it!" he yells.')
+    choice = input("Do you help him calm down or join in the rage? (calm/join): ").strip().lower()
+    if choice == "calm":
+        print("Moon speaks calmly, 'It is okay to be angry, Brutus. But it won't bring the fish back.'")
+        print("Brutus breathes deeply and sits down. 'Maybe you're right.' ")
+        return True
+    else: 
+        print("Moon and Brutus struggle for the fish, unable to catch it. The anger remains.")
+        return False
+
+def bargain_challenge():
+    print("\nIn a hollow log, Barley the badger whispers, 'If I give him my acorn, maybe he'll come back.'")
+    print("He's trying to make a deal with the wind.")
+    choice = input("Do you tell him that life doesn't work that way? (yes/no): ").strip().lower()
+    if choice == "yes":
+        print("Moon gently tells Barley, 'You can't trade with grief. You just have to face it.'")
+        print("Barley looks down, nodding slowly.")
+        return True 
+    else: 
+        print("Barley continues his whispering deals to the wind.")
+        return False 
+
+def depression_challenge():
+    print("\nThe cave is dark. Inside, Bella the bat clings to the ceiling, hiding from the world.")
+    print('"Why come out? Nothing matters," she sighs.')
+    choice = input("Do you sit in silence with her or tell her to get up? (sit/talk): ").strip().lower()
+    if choice == "sit":
+        print("Moon curls up in silence beside Bella, just being there.")
+        print("After a long moment, Bella opens her wings and stretches. 'Thanks for staying.'")
+        return True
+    else:
+        print("Bella turns away. She isn’t ready.")
+        return False
+
+def acceptance_challenge(rooms):
+    completed_count = sum(1 for r in rooms[:-1] if r.completed)
+    if completed_count < len(rooms) - 1:
+        print("\nYou step onto the hilltop and see his mother's grave marked with a weathered stone and wildflowers.")
+        print("Moon feels a heavy weight in his chest as he approaches.")
+        print("Overcome with grief, he cries out for his mother but falls to his knees with a broken heart.")
+        print("A voice whispers: 'You must face every part of your sorrow before you can truly say goodbye.'")
+        print("Moon's heart breaks, and he cannot continue...")
+        print("\nMoon dies of heartbreak. You must help him face the other stages first.\n")
+        return False
+    else:
+        print("\nYou arrive again at the hilltop, standing before the grave of Moon's mother.")
+        print("Moon falls to his knees, tears streaming down his face.")
+        print('"Mom," he cries out, "I’ve loved you too much to understand that you’re not coming back."')
+        print("He sits beside the grave, feeling a bittersweet peace wash over him.")
+        print("At last, Moon whispers a quiet goodbye — not of forgetting, but of acceptance.")
+        return True
+
+# Room Definitions
+rooms = [
+    Room("Path of Shock", "A silent path where nothing moves. You hear only a heartbeat.", "Shock", shock_challenge),
+    Room("Cabin of Denial", "An old wooden cabin, empty except for a waiting dog.", "Denial", denial_challenge),
+    Room("Raging River", "A wild river roars nearby, with a bear stomping at the edge.", "Anger", anger_challenge),
+    Room("Hollow Log", "A log filled with whispered promises and desperate trades.", "Bargaining", bargain_challenge),
+    Room("Cave of Stillness", "A dark, echoing cave where light barely touches.", "Depression", depression_challenge),
+    Room("Hilltop Grave", "A peaceful hill under a golden sun, with a single tree and a grave.", "Acceptance", lambda: acceptance_challenge(rooms))
+]
+
+def play_game():
+    print("🌙 Welcome to 'Moon the Raccoon: Through the Forest' 🌲")
+    print("You are Moon, a young raccoon lost in the forest.\n")
+
+    for room in rooms:
+        print(f"\n--- {room.name} ---")
+        print(room.description)
+
+        success = room.challenge_func()
+        if success:
+            room.completed = True
+        else:
+            if room.stage == "Acceptance":
+                # Heartbreak game over — end the game here
+                print("Game Over.")
+                return
+            # Retry loop for other rooms
+            while not room.completed:
+                retry = input("Try again? (yes/no): ").strip().lower()
+                if retry == "yes":
+                    success = room.challenge_func()
+                    room.completed = success
+                else:
+                    print("Moon sits and reflects, gathering courage...")
+
+    print("\n Moon has walked the full path through grief. He cannot forget, but he can now live with it.")
+    print("Thank you for guiding him. ")
+
+# Run the game
+if __name__ == "__main__":
+    play_game()
