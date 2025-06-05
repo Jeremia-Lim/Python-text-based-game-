@@ -101,7 +101,7 @@ rooms = [
 ]
 
 def play_game():
-    print("🌙 Welcome to 'Moon the Raccoon: Through the Forest' 🌲")
+    print(" Welcome to 'Moon the Raccoon: Through the Forest' ")
     print("You are Moon, a young raccoon lost in the forest.\n")
 
     for room in rooms:
